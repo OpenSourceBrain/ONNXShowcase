@@ -12,6 +12,7 @@ RUN pip install mxnet
 RUN pip install torch
 RUN pip install pandas
 RUN pip install xgboost
+RUN pip install efficientnet
 
 COPY ml_info.py /root
 
