@@ -9,7 +9,9 @@ def print_info(verbose=True):
     if verbose:
         print('  Info on Python (v%s) packages:'%platform.python_version())
 
-        for m in sorted(['numpy','scipy','tensorflow','onnx','onnxconverter-common','keras-onnx','mxnet','pydot','graphviz', 'torch', 'protobuf']):
+        for m in sorted(['numpy','scipy','tensorflow','onnx','onnxruntime','onnxconverter-common',
+                         'keras-onnx','mxnet','pydot','graphviz', 'torch', 'torchvision',
+                         'protobuf']):
             installed_ver = False
             try:
                 exec('import %s'%m)
