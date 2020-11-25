@@ -13,15 +13,17 @@ def print_info(verbose=True):
                          'keras-onnx','mxnet','pydot','graphviz', 'torch', 'torchvision',
                          'protobuf']):
             installed_ver = False
+            err = 'Not installed???'
             try:
                 exec('import %s'%m)
+                err = 'Failing???'
                 if m == 'hdmf':
                     import hdmf._version
                     installed_ver = 'v%s'%hdmf._version.get_versions()['version']
                 else:
                     installed_ver = 'v%s'%eval('%s.__version__'%m)
             except Exception as e:
-                installed_ver = '???'
+                installed_ver = '%s (%s)'%(err,e)
             print('    %s%s(installed: %s)'%(m, ' '*(20-len(m)), installed_ver))
 
 
