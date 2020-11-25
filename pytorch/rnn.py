@@ -2,8 +2,8 @@ import torch
 from torch import nn
 
 input_size = 3
-hidden_size = 2
-num_layers  = 2
+hidden_size = 1
+num_layers  = 1
 
 in_x = 2
 in_y = 3
@@ -25,7 +25,7 @@ output, hn = rnn(input, h0)
 print('Output: %s'%output)
 
 # Export the model
-fn = "simple.onnx"
+fn = "rnn.onnx"
 torch_out = torch.onnx._export(rnn,             # model being run
                                input,                       # model input (or a tuple for multiple inputs)
                                fn,       # where to save the model (can be a file or file-like object)

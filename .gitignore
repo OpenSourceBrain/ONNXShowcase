@@ -1,3 +1,5 @@
 *.pyc
 /protobuf/ADDRESSES.txt
 /ANN_Rev.pdf
+/pytorch/*.dot
+/pytorch/*.svg
