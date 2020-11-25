@@ -10,5 +10,9 @@ python rnn.py
 python print_onnx_info.py rnn.onnx
 ./onnx_png.sh rnn
 
+python ABCD.py
+python print_onnx_info.py ABCD.onnx
+./onnx_png.sh ABCD
+
 
 echo "All done."
