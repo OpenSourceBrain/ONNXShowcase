@@ -25,7 +25,7 @@ input = torch.zeros(in_size, in_size)
 print('Input: %s'%input)
 
 output = m(input)
-print('Output: %s'%output)
+print('Output calculated by pytorch: %s'%output)
 
 # Export the model
 fn = "ABCD.onnx"
@@ -36,3 +36,20 @@ torch_out = torch.onnx._export(m,             # model being run
 
 print('Done! Exported to: %s'%fn)
 
+def info(a):
+    print('Info: %s (%s), %s'%(a.name, a.type, a.shape))
+
+import onnxruntime as rt
+
+sess = rt.InferenceSession(fn)
+info(sess.get_inputs()[0])
+info(sess.get_outputs()[0])
+
+
+import numpy
+x = numpy.array(input)
+res = sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: x})
+print('Output calculated by onnxruntime:  %s'%res)
+
+
+print('Done! ONNX inference')
