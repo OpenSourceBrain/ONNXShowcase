@@ -1,12 +1,18 @@
+import sys
 import torch
 from torch import nn
+import numpy as np
+
+sys.path.append("../onnx")
+import ABCD_info as abcd
 
 in_size = 1
 out_size = 1
 
 A = nn.Linear(in_size, out_size)
-A.weight[0][0] = 2
-A.bias[0] = 2
+A.weight[0][0] = abcd.A_slope
+A.bias[0] = abcd.A_intercept
+'''
 B = nn.Linear(in_size, out_size)
 B.weight[0][0] = 1
 B.bias[0] = 0
@@ -16,21 +22,30 @@ C.bias[0] = 0
 D = nn.Linear(in_size, out_size)
 D.weight[0][0] = 1
 D.bias[0] = 0
-#B = nn.Sigmoid()
-m = nn.Sequential(A,B,C,D)
+#'''
+B = nn.Sigmoid()
+
+class MyExp(nn.Module):
+
+    def forward(self, input: torch.Tensor):
+        return torch.exp(input)
+
+C = MyExp()
+
+m = nn.Sequential(A,B,C)
 print('Model: %s'%m)
 #print(dir(m))
 
-input = torch.zeros(in_size, in_size)
-print('Input: %s'%input)
 
-output = m(input)
-print('Output calculated by pytorch: %s'%output)
+for i in abcd.test_values:
+    input = torch.ones(in_size)*i
+    output = m(input)
+    print('Output calculated by pytorch (input %s): %s'%(input,output))
 
 # Export the model
 fn = "ABCD.onnx"
 torch_out = torch.onnx._export(m,             # model being run
-                               input,                       # model input (or a tuple for multiple inputs)
+                               input,         # model input (or a tuple for multiple inputs)
                                fn,       # where to save the model (can be a file or file-like object)
                                export_params=True)      # store the trained parameter weights inside the model file
 
@@ -45,11 +60,12 @@ sess = rt.InferenceSession(fn)
 info(sess.get_inputs()[0])
 info(sess.get_outputs()[0])
 
+for i in abcd.test_values:
+    
+    x = np.array([i],np.float32)
 
-import numpy
-x = numpy.array(input)
-res = sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: x})
-print('Output calculated by onnxruntime:  %s'%res)
+    res = sess.run([sess.get_outputs()[0].name], {sess.get_inputs()[0].name: x})
+    print('Output calculated by onnxruntime (input: %s):  %s'%(x,res))
 
 
 print('Done! ONNX inference')
