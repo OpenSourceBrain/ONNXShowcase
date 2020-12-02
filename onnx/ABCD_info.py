@@ -1,23 +1,23 @@
 import math 
 # A - Linear
 
-A_slope = 2
-A_intercept = 2
+A_slope = 2.
+A_intercept = 2.
 
 # B - Logistic
 
-B_gain = 1
-B_bias = 0
-B_offset = 0
+B_gain = 1.
+B_bias = 0.
+B_offset = 0.
 
 # C - Exponential
 
-C_scale = 1
-C_rate = 1
-C_bias = 0
-C_offset = 0
+C_scale = 1.
+C_rate = 1.
+C_bias = 0.
+C_offset = 0.
 
-test_values = [-1,0,1,5]
+test_values = [-1.,0.,1.,5.]
 
 def evaluate(input):
     A = A_slope * input + A_intercept

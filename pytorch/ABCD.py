@@ -12,17 +12,7 @@ out_size = 1
 A = nn.Linear(in_size, out_size)
 A.weight[0][0] = abcd.A_slope
 A.bias[0] = abcd.A_intercept
-'''
-B = nn.Linear(in_size, out_size)
-B.weight[0][0] = 1
-B.bias[0] = 0
-C = nn.Linear(in_size, out_size)
-C.weight[0][0] = 1
-C.bias[0] = 0
-D = nn.Linear(in_size, out_size)
-D.weight[0][0] = 1
-D.bias[0] = 0
-#'''
+
 B = nn.Sigmoid()
 
 class MyExp(nn.Module):
@@ -50,6 +40,10 @@ torch_out = torch.onnx._export(m,             # model being run
                                export_params=True)      # store the trained parameter weights inside the model file
 
 print('Done! Exported to: %s'%fn)
+
+import onnx
+onnx_model = onnx.load(fn)
+print('Model: %s'%onnx_model)
 
 def info(a):
     print('Info: %s (%s), %s'%(a.name, a.type, a.shape))
