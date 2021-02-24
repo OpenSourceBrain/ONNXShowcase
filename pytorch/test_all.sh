@@ -1,6 +1,6 @@
 set -e
 
-python squeezenet2onnx.py 
+python squeezenet2onnx.py
 
 python simple.py
 python print_onnx_info.py simple.onnx
